@@ -9,7 +9,7 @@ This is a simple example of how to render a planet with spherical LOD in less th
 
 **Screenshot** 
 
-![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/planet-lod.png?raw=true)
+![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/Animation.gif?raw=true)
 
 
 	struct World
