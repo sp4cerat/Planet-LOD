@@ -7,6 +7,8 @@
 
 This is a simple example of how to render a planet with spherical LOD in less than 100 lines of c++ code.
 
+**Screenshot** 
+
 ![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/planet-lod.png?raw=true)
 
 
