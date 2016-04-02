@@ -5,7 +5,7 @@
 
 **Summary** 
 
-This is a simple example of how to render a planet with spherical LOD in less than 100 lines of c++ code.
+This is a simple example of how to render a planet with spherical LOD in less than 100 lines of c++ code. The algorithm renders the planet as cube with 6 sides. Each side is basically a quad which is being subdivided based on the center of detail.
 
 **Screenshot** 
 
