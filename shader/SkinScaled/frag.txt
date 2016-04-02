@@ -1,0 +1,8 @@
+uniform sampler2D tex_skin; 
+
+varying vec2 vs_tex_coord;
+
+void main(void)
+{
+	gl_FragColor = texture2D(tex_skin,vs_tex_coord) ;
+}

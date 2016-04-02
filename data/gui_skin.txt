@@ -1,0 +1,240 @@
+
+skin begin button
+skin normal ../data/win8/button_normal.png
+skin hover ../data/win8/button_hover.png
+skin pressed ../data/win8/button_selected.png
+skin scale inner 4 67 4 16
+skin end
+
+skin begin submenu
+skin normal ../data/win8/submenu_normal.png
+skin hover ../data/win8/submenu_hover.png
+skin pressed ../data/win8/submenu_selected.png
+skin scale inner 4 58 4 16
+skin end
+
+skin begin menu
+skin hover ../data/win8/menu_hover.png
+skin pressed ../data/win8/menu_selected.png
+skin scale inner 4 67 4 16
+skin end
+
+skin begin tab
+skin normal ../data/win8/tab_normal.png
+skin hover ../data/win8/tab_hover.png
+skin pressed ../data/win8/tab_selected.png
+skin scale inner 4 67 4 16
+skin end
+
+skin begin tab_button
+skin normal ../data/win8/tab_normal.png
+skin hover ../data/win8/tab_hover.png
+skin pressed ../data/win8/tab_selected.png
+skin scale inner 4 67 4 16
+skin end
+
+skin begin tab_window
+skin normal ../data/win8/tab_window_normal.png
+skin hover ../data/win8/tab_window_hover.png
+skin pressed ../data/win8/tab_window_selected.png
+skin scale inner 4 67 4 16
+skin end
+
+skin begin checkbox
+skin normal ../data/win8/checkbox_normal.png
+skin hover ../data/win8/checkbox_hover.png
+skin pressed ../data/win8/checkbox_selected.png
+skin end
+
+skin begin combo
+skin normal ../data/win8/combo_normal.png
+skin hover ../data/win8/combo_hover.png
+skin pressed ../data/win8/combo_selected.png
+skin scale inner 4 52 4 16
+skin end
+
+skin begin combo_select
+skin hover ../data/win8/combo_select_hover.png
+skin pressed ../data/win8/combo_select_selected.png
+skin scale inner 4 67 4 16
+skin end
+
+skin begin combo_background
+skin normal ../data/win8/combo_background.png
+skin scale inner 4 67 4 16
+skin end
+
+skin begin progress_horizontal_left
+skin normal ../data/win8/progress_horizontal_left.png
+skin scale inner 2 397 2 28
+skin end
+
+skin begin progress_horizontal_right
+skin normal ../data/win8/progress_horizontal_right.png
+skin scale inner 2 397 2 28
+skin end
+
+skin begin progress_vertical_left
+skin normal ../data/win8/progress_vertical_left.png
+skin scale inner 2 28 2 397
+skin end
+
+skin begin progress_vertical_right
+skin normal ../data/win8/progress_vertical_right.png
+skin scale inner 2 28 2 397
+skin end
+
+skin begin slider_horiz_left
+skin normal ../data/win8/slider_horiz_left_normal.png
+skin hover ../data/win8/slider_horiz_left_hover.png
+skin pressed ../data/win8/slider_horiz_left_selected.png
+skin end
+
+skin begin slider_horiz_right
+skin normal ../data/win8/slider_horiz_right_normal.png
+skin hover ../data/win8/slider_horiz_right_hover.png
+skin pressed ../data/win8/slider_horiz_right_selected.png
+skin end
+
+skin begin slider_horiz_button
+skin normal ../data/win8/slider_horiz_button_normal.png
+skin hover ../data/win8/slider_horiz_button_hover.png
+skin pressed ../data/win8/slider_horiz_button_selected.png
+skin end
+
+skin begin slider_vert_left
+skin normal ../data/win8/slider_vert_left_normal.png
+skin hover ../data/win8/slider_vert_left_hover.png
+skin pressed ../data/win8/slider_vert_left_selected.png
+skin end
+
+skin begin slider_vert_right
+skin normal ../data/win8/slider_vert_right_normal.png
+skin hover ../data/win8/slider_vert_right_hover.png
+skin pressed ../data/win8/slider_vert_right_selected.png
+skin end
+
+skin begin slider_vert_button
+skin normal ../data/win8/slider_vert_button_normal.png
+skin hover ../data/win8/slider_vert_button_hover.png
+skin pressed ../data/win8/slider_vert_button_selected.png
+skin end
+
+skin begin slider_vert_button
+skin normal ../data/win8/slider_vert_button_normal.png
+skin hover ../data/win8/slider_vert_button_hover.png
+skin pressed ../data/win8/slider_vert_button_selected.png
+skin end
+
+skin begin vscrollbar
+skin normal ../data/win8/vscrollbar_normal.png
+skin hover ../data/win8/vscrollbar_hover.png
+skin pressed ../data/win8/vscrollbar_selected.png
+skin end
+
+skin begin vscrollbar_button_start
+skin normal ../data/win8/vscrollbar_button_up_normal.png
+skin hover ../data/win8/vscrollbar_button_up_hover.png
+skin pressed ../data/win8/vscrollbar_button_up_selected.png
+skin end
+
+skin begin vscrollbar_button_start
+skin normal ../data/win8/vscrollbar_button_up_normal.png
+skin hover ../data/win8/vscrollbar_button_up_hover.png
+skin pressed ../data/win8/vscrollbar_button_up_selected.png
+skin end
+
+skin begin vscrollbar_button_center
+skin normal ../data/win8/vscrollbar_button_normal.png
+skin hover ../data/win8/vscrollbar_button_hover.png
+skin pressed ../data/win8/vscrollbar_button_selected.png
+skin end
+
+skin begin vscrollbar_button_end
+skin normal ../data/win8/vscrollbar_button_down_normal.png
+skin hover ../data/win8/vscrollbar_button_down_hover.png
+skin pressed ../data/win8/vscrollbar_button_down_selected.png
+skin end
+
+skin begin hscrollbar
+skin normal ../data/win8/hscrollbar_normal.png
+skin hover ../data/win8/hscrollbar_hover.png
+skin pressed ../data/win8/hscrollbar_selected.png
+skin end
+
+skin begin hscrollbar
+skin normal ../data/win8/hscrollbar_normal.png
+skin hover ../data/win8/hscrollbar_hover.png
+skin pressed ../data/win8/hscrollbar_selected.png
+skin end
+
+skin begin hscrollbar_button_center
+skin normal ../data/win8/hscrollbar_button_normal.png
+skin hover ../data/win8/hscrollbar_button_hover.png
+skin pressed ../data/win8/hscrollbar_button_selected.png
+skin end
+
+skin begin hscrollbar_button_end
+skin normal ../data/win8/hscrollbar_button_right_normal.png
+skin hover ../data/win8/hscrollbar_button_right_hover.png
+skin pressed ../data/win8/hscrollbar_button_right_selected.png
+skin end
+
+skin begin window
+skin normal ../data/win8/window_normal.png
+skin hover ../data/win8/window_hover.png
+skin pressed ../data/win8/window_selected.png
+skin scale inner 34 327 94 225
+skin end
+
+skin begin window_close
+skin normal ../data/win8/window_close_normal.png
+skin hover ../data/win8/window_close_hover.png
+skin end
+
+skin begin window_toggle
+skin normal ../data/win8/window_toggle_normal.png
+skin hover ../data/win8/window_toggle_hover.png
+skin pressed ../data/win8/window_toggle_selected.png
+skin end
+
+skin begin window_resize
+skin normal ../data/win8/window_resize_normal.png
+skin hover ../data/win8/window_resize_hover.png
+skin pressed ../data/win8/window_resize_selected.png
+skin end
+
+skin begin textedit
+skin normal ../data/win8/textedit_normal.png
+skin hover ../data/win8/textedit_hover.png
+skin pressed ../data/win8/textedit_selected.png
+skin scale inner 4 67 4 16
+skin end
+
+skin begin textedit_up
+skin normal ../data/win8/textedit_up_normal.png
+skin hover ../data/win8/textedit_up_hover.png
+skin pressed ../data/win8/textedit_up_selected.png
+skin end
+
+skin begin textedit_down
+skin normal ../data/win8/textedit_down_normal.png
+skin hover ../data/win8/textedit_down_hover.png
+skin pressed ../data/win8/textedit_down_selected.png
+skin end
+
+skin begin mouse_arrow
+skin normal ../data/mouse/arrow.png
+skin end
+
+skin begin file_dialog
+skin normal ../data/win8/win8_noscroll/window_normal.png
+skin hover ../data/win8/win8_noscroll/window_hover.png
+skin pressed ../data/win8/win8_noscroll/window_selected.png
+skin scale inner 34 327 94 225
+skin end
+
+skin begin file_list_window
+skin hover ../data/win8/hscrollbar_button_hover.png
+skin pressed ../data/win8/hscrollbar_button_selected.png
+skin end

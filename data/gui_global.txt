@@ -1,0 +1,40 @@
+
+# Font
+
+number font_size 14
+string font_name ../data/ipaexg.ttf
+
+vec4 font_color 0 0 0 1
+vec4 font_color_hover 0 0 0.5 1
+vec4 font_color_pressed 0.3 0 0 1
+
+# Gui Controls
+
+number window_title_pady 10
+number window_title_height 36
+number window_closebutton_width 58
+number window_closebutton_height 26
+number window_closebutton_padx 8
+number window_closebutton_pady 1
+number window_togglebutton_width 26
+number window_togglebutton_height 26
+number window_togglebutton_padx 70
+number window_togglebutton_pady 1
+number window_resizebutton_width 23
+number window_resizebutton_height 22
+number window_frame_pad_left 11
+number window_frame_pad_right 33
+number window_frame_pad_up 66
+number window_frame_pad_down 30
+number window_hscrollbar_height 20
+number window_vscrollbar_width 20
+
+number button_pad_left 5
+number button_pad_up 0
+number button_pad_right 5
+number button_pad_down 0
+
+number button_size_x 30
+number button_size_y 20
+
+number menu_size_x 100

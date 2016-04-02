@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{0afe1f4c-a089-43f2-9880-9653e3e32383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext">
+      <UniqueIdentifier>{68ac1930-7cbf-408a-97bd-650bca509cb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{9598472a-f3af-468e-b477-a16a6fc8fb2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\glew">
+      <UniqueIdentifier>{1f3f17e7-7ac3-4945-bd6f-3ef66708c684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\drawtext">
+      <UniqueIdentifier>{2136c84b-637d-4bc3-870c-546230bd0a4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\StackWalker">
+      <UniqueIdentifier>{a835f488-966d-4589-8e1a-c0edc8d129cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader\SkinRepeated">
+      <UniqueIdentifier>{5af0bd26-f5bd-411c-88f4-756f29fc423d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader\SkinScaled">
+      <UniqueIdentifier>{8355438b-8e0c-4a44-a74a-ed566e924f53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader\SkinScaledInner">
+      <UniqueIdentifier>{fe27c7ac-7ce0-418b-9e0a-12e04a13ea6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cfg">
+      <UniqueIdentifier>{3f242c67-04ba-4894-8743-451b1e740aca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\ext\wglew.h">
+      <Filter>ext\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ext\glew.h">
+      <Filter>ext\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ext\glxew.h">
+      <Filter>ext\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ext\drawtext\drawtext.h">
+      <Filter>ext\drawtext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ext\drawtext\drawtext_impl.h">
+      <Filter>ext\drawtext</Filter>
+    </ClInclude>
+    <ClInclude Include="gui.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Bmp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="core.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="error.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="fbo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="glsl.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="libs.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="ogl.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ext\stackwalker\error.h">
+      <Filter>ext\StackWalker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ext\stackwalker\StackWalker.h">
+      <Filter>ext\StackWalker</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\glew.cpp">
+      <Filter>ext\glew</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\drawtext\font.c">
+      <Filter>ext\drawtext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\drawtext\unicode\unicode.cpp">
+      <Filter>ext\drawtext</Filter>
+    </ClCompile>
+    <ClCompile Include="core.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Bmp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\stackwalker\StackWalker.cpp">
+      <Filter>ext\StackWalker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\drawtext\drawgl.c">
+      <Filter>ext\drawtext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\drawtext\utf8.c">
+      <Filter>ext\drawtext</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ext\drawtext\Makefile">
+      <Filter>ext\drawtext</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\shader\SkinRepeated\frag.txt">
+      <Filter>shader\SkinRepeated</Filter>
+    </Text>
+    <Text Include="..\shader\SkinRepeated\vs.txt">
+      <Filter>shader\SkinRepeated</Filter>
+    </Text>
+    <Text Include="..\shader\SkinScaled\frag.txt">
+      <Filter>shader\SkinScaled</Filter>
+    </Text>
+    <Text Include="..\shader\SkinScaled\vs.txt">
+      <Filter>shader\SkinScaled</Filter>
+    </Text>
+    <Text Include="..\shader\SkinScaledInner\frag.txt">
+      <Filter>shader\SkinScaledInner</Filter>
+    </Text>
+    <Text Include="..\shader\SkinScaledInner\vs.txt">
+      <Filter>shader\SkinScaledInner</Filter>
+    </Text>
+    <Text Include="..\data\gui_global.txt">
+      <Filter>cfg</Filter>
+    </Text>
+    <Text Include="..\data\gui_skin.txt">
+      <Filter>cfg</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

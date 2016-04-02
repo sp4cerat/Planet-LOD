@@ -1,0 +1,24 @@
+uniform sampler2D tex_skin; 
+uniform vec4 px,py,pos;
+
+varying vec2 vs_tex_coord;
+
+void main(void)
+{
+	vec2 boxpos=vs_tex_coord;
+	vec2 uv=boxpos.xy;
+	
+	if(boxpos.x>px.y) uv.x=px.y+(boxpos.x-px.y)*(px.z-px.y)/(pos.x-px.y-(px.w-px.z));
+	if(boxpos.y>py.y) uv.y=py.y+(boxpos.y-py.y)*(py.z-py.y)/(pos.y-py.y-(py.w-py.z));
+
+	float d2x=pos.x-(px.w-px.z);
+	if(boxpos.x>px.y)if(boxpos.x>d2x) uv.x=px.z+boxpos.x-d2x;
+
+	float d2y=pos.y-(py.w-py.z);
+	if(boxpos.y>py.y)if(boxpos.y>d2y) uv.y=py.z+boxpos.y-d2y;
+
+	uv.x/=px.w;
+	uv.y/=py.w;
+	
+	gl_FragColor = texture2D(tex_skin,uv) ;
+}
