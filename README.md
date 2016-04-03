@@ -46,8 +46,8 @@ What the code is not:
 		static void draw_recursive(vec3f p, float size, vec3f center)
 		{
 			float tile_size = float(size) / float(tiles_res);
-			float ratio		= gui.screen[0].slider["lod.ratio"].val;
-			float minsize	= gui.screen[0].slider["detail"].val;
+			float ratio		= gui.screen[0].slider["lod.ratio"].val; // default = 0.5
+			float minsize	= gui.screen[0].slider["detail"].val; // default = 0.01
 	
 			loopi(0, tiles_res) loopj(0, tiles_res)
 			{
