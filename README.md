@@ -7,6 +7,18 @@
 
 This is a simple example of how to render a planet with spherical LOD in less than 100 lines of c++ code. The algorithm renders the planet as cube with 6 sides. Each side is basically a quad which is being subdivided based on the center of detail.
 
+What the code is : 
+
+* A simple demo to show how a planet renderer with quadtree works
+* A little code as possible so you can play with the parameters
+* Easy to understand
+
+What the code is not:
+
+* A complete planet renderer
+* A full library to render a planet with best performance
+* A demonstration of high performance gl rendering
+* 
 **Screenshot** 
 
 ![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/Animation.gif?raw=true)
