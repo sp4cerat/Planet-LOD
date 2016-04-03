@@ -17,7 +17,7 @@
 
 struct World
 {
-	enum { search_res = 4 }; // search 4x4 points in a tile if a recusion is required
+	enum { search_res = 2 }; // search 4x4 points in a tile if a recusion is required
 	enum { tiles_res = 2 };  // tile res : resolution of the tiles 
 	enum { radius = 1 };     // planet radius
 
@@ -45,21 +45,12 @@ struct World
 		{
 			float a = float(i) *size / float(tiles_res) + p.x;
 			float b = float(j) *size / float(tiles_res) + p.y;
+			float dist = acos(vec3f(a + 0.5*tile_size, b + 0.5*tile_size, p.z).norm().dot(center)) / M_PI;
 
-			float dist = 999999;
-			loopk(0, search_res + 1)	
-			loopl(0, search_res + 1)
-			{
-				float dotp = vec3f(
-					a + (float(k) / search_res)*tile_size, 
-					b + (float(l) / search_res)*tile_size, p.z).norm().dot(center);
-				float d = acos(dotp) / M_PI; // anlge
-				dist = min(dist, d);
-			}
 			if (dist > 0.5) continue;//culling
 
 			// recurse ?
-			if (dist < ratio*size && size > minsize)
+			if (dist < 1.01*sqrt(2)*ratio*size && size > minsize)
 				draw_recursive(vec3f(a, b, p.z), tile_size, center);	// yes
 			else
 				draw_quad(vec3f(a, b, p.z), tile_size);					// no
@@ -136,6 +127,7 @@ void init_gui()
 			}
 			if (!draw) return;
 
+
 			quaternion q(b.var.vec4["rotation"]);
 			if(gui.mouse.button[0] & b.pressed)				// rotate by left mouse
 			{
@@ -145,6 +137,7 @@ void init_gui()
 				q=qy*qx*q;
 				b.var.vec4["rotation"]=vec4f(q.x,q.y,q.z,q.w);
 			}
+
 			double z=b.var.number["zoom"];
 			if(b.hover)										// zoom by wheel
 			{
