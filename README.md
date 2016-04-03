@@ -10,7 +10,7 @@ This is a simple example of how to render a planet with spherical LOD in less th
 What the code is : 
 
 * A simple demo to show how a planet renderer with quadtree works
-* A little code as possible so you can play with the parameters
+* As short as possible so you can experiment with the algorithm
 * Easy to understand
 
 What the code is not:
