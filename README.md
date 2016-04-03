@@ -15,10 +15,10 @@ What the code is :
 
 What the code is not:
 
-* A complete planet renderer
-* A full library to render a planet with best performance
-* A demonstration of high performance gl rendering
-* 
+* A ready to use planet rendering library with shaders frustum culling etc
+* A way to render a planet with best performance
+* A demonstration of modern high performance gl rendering
+
 **Screenshot** 
 
 ![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/Animation.gif?raw=true)
