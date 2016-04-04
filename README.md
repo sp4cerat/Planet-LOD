@@ -25,8 +25,6 @@ What the code is not:
 
 	struct World
 	{
-		enum { search_res = 2 }; // search 4x4 points in a tile if a recusion is required
-		enum { tiles_res = 2 };  // tile res : resolution of the tiles 
 		enum { radius = 1 };     // planet radius
 	
 		static void draw_quad(vec3f pos, float size) 
@@ -36,7 +34,7 @@ What the code is not:
 			glBegin(GL_QUADS);
 			loopi(0, 4)
 			{
-				vec3f p = pos + vec3f((i & 1) ^ (i >> 1), (i >> 1), 0)*size;
+				vec3f p = pos + vec3f((i & 1) ^ (i >> 1), i >> 1, 0)*size;
 				p = p.norm() * radius;
 				glVertex3f(p.x, p.y, p.z);
 			}
@@ -45,15 +43,16 @@ What the code is not:
 		};
 		static void draw_recursive(vec3f p, float size, vec3f center)
 		{
-			float tile_size = float(size) / float(tiles_res);
-			float ratio		= gui.screen[0].slider["lod.ratio"].val; // default = 0.5
-			float minsize	= gui.screen[0].slider["detail"].val; // default = 0.01
+			float tile_size = size / 2.0f;
+			float ratio		= gui.screen[0].slider["lod.ratio"].val; // default : 0.5
+			float minsize	= gui.screen[0].slider["detail"].val;    // default : 0.01
 	
-			loopi(0, tiles_res) loopj(0, tiles_res)
+			loopi(0, 2) loopj(0, 2)
 			{
-				float a = float(i) *size / float(tiles_res) + p.x;
-				float b = float(j) *size / float(tiles_res) + p.y;
-				float dist = acos(vec3f(a + 0.5*tile_size, b + 0.5*tile_size, p.z).norm().dot(center)) / M_PI;
+				float a = float(i) * tile_size + p.x;
+				float b = float(j) * tile_size + p.y;
+				vec3f tile_center=vec3f(a + 0.5*tile_size, b + 0.5*tile_size, p.z).norm();
+				float dist = acos(tile_center.dot(center)) / M_PI;
 	
 				if (dist > 0.5) continue;//culling
 	
