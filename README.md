@@ -7,6 +7,8 @@
 
 This is a simple example of how to render a planet with spherical LOD in less than 100 lines of c++ code. The algorithm renders the planet as cube with 6 sides. Each side is basically a quad which is being subdivided based on the center of detail.
 
+If you want to use this code in a game, you will need to render an NxN triangle grid as VBO in the render_quad function. Further, the vertex shader should be used to create a smooth transition between different levels of detail. This code is not intended to be a ready to use in a game / game engine! 
+
 What the code is : 
 
 * A simple demo to show how a planet renderer with quadtree works
