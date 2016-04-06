@@ -14,80 +14,79 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "gui.h"
 ////////////////////////////////////////////////////////////////////////////////
-
 struct World
 {
-	enum { radius = 1 };     // planet radius
+	static int tris_rendered;
 
-	static void draw_quad(vec3f pos, float size) 
+	static void draw_tri(vec3f p1, vec3f p2, vec3f p3)
 	{
-		// comment out the following line for solid rendering
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glBegin(GL_QUADS);
+		glBegin(GL_TRIANGLES);
+		glVertex3f(p1.x, p1.y, p1.z);
+		glVertex3f(p2.x, p2.y, p2.z);
+		glVertex3f(p3.x, p3.y, p3.z);
+		glEnd();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		tris_rendered++;
+	}
+	static void draw_recursive(vec3f p1,vec3f p2,vec3f p3, vec3f center , float size=1)
+	{
+		float ratio = gui.screen[0].slider["lod.ratio"].val; // default : 0.5
+		float minsize = gui.screen[0].slider["detail"].val;    // default : 0.01
+
+		double dot = double(((p1+p2+p3)/3).dot(center));
+		double dist = acos(clamp(dot, -1, 1)) / M_PI;
+
+		if (dist > 0.5) return;//culling
+
+		if (dist > double(ratio)*double(size) || size < minsize) 
+		{ 
+			draw_tri(p1, p2, p3); 
+			return; 
+		}
+		
+		vec3f p[6] = { p1, p2, p3, (p1 + p2) / 2, (p2 + p3) / 2, (p3 + p1) / 2 };
+		int idx[12] = { 0, 3, 5, 5, 3, 4, 3, 1, 4, 5, 4, 2 };
 		loopi(0, 4)
 		{
-			vec3f p = pos + vec3f((i & 1) ^ (i >> 1), i >> 1, 0)*size;
-			p = p.norm() * radius;
-			glVertex3f(p.x, p.y, p.z);
+			draw_recursive(
+				p[idx[3 * i + 0]].norm(), 
+				p[idx[3 * i + 1]].norm(),
+				p[idx[3 * i + 2]].norm(),
+				center,size/2 );
 		}
-		glEnd();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		
-	};
-	static void draw_recursive(vec3f p, float size, vec3f center)
-	{
-		float tile_size = size / 2.0f;
-		float ratio		= gui.screen[0].slider["lod.ratio"].val; // default : 0.5
-		float minsize	= gui.screen[0].slider["detail"].val;    // default : 0.01
-
-		loopi(0, 2) loopj(0, 2)
-		{
-			float a = float(i) * tile_size + p.x;
-			float b = float(j) * tile_size + p.y;
-			vec3f tile_center=vec3f(a + 0.5*tile_size, b + 0.5*tile_size, p.z).norm();
-			float dist = acos(tile_center.dot(center)) / M_PI;
-
-			if (dist > 0.5) continue;//culling
-
-			// recurse ?
-			if (dist < 1.01*sqrt(2)*ratio*size && size > minsize)
-				draw_recursive(vec3f(a, b, p.z), tile_size, center);	// yes
-			else
-				draw_quad(vec3f(a, b, p.z), tile_size);					// no
-		}
-	};
+	}
 	static void draw(vec3f center)
 	{
-		// center is the center of detail on the sphere
-		// ||center|| = 1
-		vec3f patch_start(-1, -1, -1);
-		float patch_size = 2; // plane xy size
+		// create icosahedron
+		float t = (1.0 + sqrt(5.0)) / 2.0;
 
-		// Draw 6 Planes
+		std::vector<vec3f> p({ 
+			{ -1, t, 0 }, { 1, t, 0 }, { -1, -t, 0 }, { 1, -t, 0 },
+			{ 0, -1, t }, { 0, 1, t }, { 0, -1, -t }, { 0, 1, -t },
+			{ t, 0, -1 }, { t, 0, 1 }, { -t, 0, -1 }, { -t, 0, 1 },
+		});
+		std::vector<int> idx({ 
+			0, 11, 5, 0, 5, 1, 0, 1, 7, 0, 7, 10, 0, 10, 11,
+			1, 5, 9, 5, 11, 4, 11, 10, 2, 10, 7, 6, 10, 7, 6, 7, 1, 8,
+			3, 9, 4, 3, 4, 2, 3, 2, 6, 3, 6, 8, 3, 8, 9,
+			4, 9, 5, 2, 4, 11, 6, 2, 10, 8, 6, 7, 9, 8, 1
+		});
 
-		// Front
-		World::draw_recursive(patch_start, 2, center);
-		// Back
-		glRotatef(180, 0, 1, 0);
-		World::draw_recursive(patch_start, patch_size, vec3f(-center.x, center.y, -center.z));
-		glRotatef(-180, 0, 1, 0);
-		// Right
-		glRotatef(90, 0, 1, 0);
-		World::draw_recursive(patch_start, patch_size, vec3f(-center.z, center.y, center.x));
-		glRotatef(-90, 0, 1, 0);
-		// Left
-		glRotatef(-90, 0, 1, 0);
-		World::draw_recursive(patch_start, patch_size, vec3f(center.z, center.y, -center.x));
-		glRotatef(90, 0, 1, 0);
-		// Up
-		glRotatef(90, 1, 0, 0);
-		World::draw_recursive(patch_start, patch_size, vec3f(center.x, center.z, -center.y));
-		glRotatef(-90, 1, 0, 0);
-		// Down
-		glRotatef(-90, 1, 0, 0);
-		World::draw_recursive(patch_start, patch_size, vec3f(center.x, -center.z, center.y));
-		glRotatef(90, 1, 0, 0);
+		tris_rendered = 0;
+
+		loopi(0, idx.size() / 3)
+		{
+			draw_recursive(
+				p[idx[i * 3 + 0]].norm(), // triangle point 1
+				p[idx[i * 3 + 1]].norm(), // triangle point 2
+				p[idx[i * 3 + 2]].norm(), // triangle point 3
+				center);
+		}
+		gui.screen[0].label["stats"].text = Gui::String("Triangles: ") + tris_rendered;
 	}
 };
+int World::tris_rendered;
 ////////////////////////////////////////////////////////////////////////////////
 void init_gui()
 {
@@ -200,18 +199,19 @@ void init_gui()
 			{
 				if(w)if(b)if(b->var.ptr["fbo"]){delete(((FBO*)b->var.ptr["fbo"]));}
 			};
-		w.label["detail"] = Gui::Label("Detail : 0.01",20, 20, 100, 20);
-		w.slider["detail"] = Gui::Slider(0.01, 1, 0.01, 120, 20, 100, 20);
+		w.label["detail"] = Gui::Label("Detail : 0.001",20, 20, 100, 20);
+		w.slider["detail"] = Gui::Slider(0.001, 1, 0.001, 120, 20, 100, 20);
 		w.slider["detail"].callback_pressed = [](Gui::Window *w, Gui::Button* b, int i) // call before drawing the first time
 		{
 			if (w)if (b) w->label["detail"].text = Gui::String("Detail : ") + ((Gui::Slider*)b)->val;
 		};
-		w.label["lod.ratio"] = Gui::Label("Ratio : 0.5", 20, 50, 100, 20);
-		w.slider["lod.ratio"] = Gui::Slider(0.01, 2, 0.5, 120, 50, 100, 20);
+		w.label["lod.ratio"] = Gui::Label("Ratio : 1", 20, 50, 100, 20);
+		w.slider["lod.ratio"] = Gui::Slider(0.01, 4, 1, 120, 50, 100, 20);
 		w.slider["lod.ratio"].callback_pressed = [](Gui::Window *w, Gui::Button* b, int i) // call before drawing the first time
 		{
 			if (w)if (b) w->label["lod.ratio"].text = Gui::String("Ratio : ") + ((Gui::Slider*)b)->val;
 		};
+		w.label["stats"] = Gui::Label("default", 20, 80, 200, 20);
 	}
 }
 ////////////////////////////////////////////////////////////////////////////////
