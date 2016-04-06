@@ -12,7 +12,7 @@ The center of detail is where the camera would be in the game. The camera in the
 
 What the code is : 
 
-* A simple demo to show how a planet renderer with quadtree works
+* A simple demo to show how a planet rendering with LOD works
 * As short as possible so you can experiment with the algorithm
 * Easy to understand
 
