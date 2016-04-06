@@ -23,7 +23,7 @@ What the code is not:
 
 **Screenshot** 
 
-![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/Animation.gif?raw=true)
+![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/Animation_new.gif?raw=true)
 
 	struct World
 	{
