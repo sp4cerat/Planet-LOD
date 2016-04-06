@@ -31,10 +31,10 @@ struct World
 	}
 	static void draw_recursive(vec3f p1,vec3f p2,vec3f p3, vec3f center , float size=1)
 	{
-		float ratio = gui.screen[0].slider["lod.ratio"].val; // default : 0.5
+		float ratio = gui.screen[0].slider["lod.ratio"].val; // default : 1
 		float minsize = gui.screen[0].slider["detail"].val;    // default : 0.01
 
-		double dot = double(((p1+p2+p3)/3).dot(center));
+		double dot = double(((p1+p2+p3)/3).norm().dot(center));
 		double dist = acos(clamp(dot, -1, 1)) / M_PI;
 
 		if (dist > 0.5) return;//culling
@@ -44,9 +44,12 @@ struct World
 			draw_tri(p1, p2, p3); 
 			return; 
 		}
+
+		// Recurse
 		
 		vec3f p[6] = { p1, p2, p3, (p1 + p2) / 2, (p2 + p3) / 2, (p3 + p1) / 2 };
 		int idx[12] = { 0, 3, 5, 5, 3, 4, 3, 1, 4, 5, 4, 2 };
+
 		loopi(0, 4)
 		{
 			draw_recursive(
