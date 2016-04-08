@@ -16,48 +16,131 @@
 ////////////////////////////////////////////////////////////////////////////////
 struct World
 {
-	static int tris_rendered;
+	enum { patch_resolution = 16 };
 
-	static void draw_tri(vec3f p1, vec3f p2, vec3f p3)
+	static int tris_rendered;
+	static GLuint vbo, vboidx, indices ;
+	static Shader shader;
+
+	static void begin_patch()
 	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		if (vbo == 0)
+		{
+			int n = patch_resolution;
+			std::vector<float> v;
+			std::vector<ushort> idx;
+			loopi(0, n + 1)loopj(0, i + 1)
+			{
+				v << 1.0f - float(i) / float(n);
+				v << float(j) / float(n);
+				v << 0.0f;
+
+				if (i > 0 && j > 0)
+				{
+					idx << ushort(v.size() / 3 - 1);
+					idx << ushort(v.size() / 3 - 2);
+					idx << ushort(v.size() / 3 - 2 - i);
+
+					if (j < i)
+					{
+						idx << ushort(v.size() / 3 - 2 - i);
+						idx << ushort(v.size() / 3 - 1 - i);
+						idx << ushort(v.size() / 3 - 1);
+					}
+				}
+			}
+			indices = idx.size();// / 3;
+			glGenBuffers(1, &vbo); ogl_check_error();
+			glBindBuffer(GL_ARRAY_BUFFER, vbo); ogl_check_error();
+			glBufferData(GL_ARRAY_BUFFER, 12 * v.size(), &v[0], GL_STATIC_DRAW); ogl_check_error();
+			glGenBuffers(1, &vboidx); ogl_check_error();
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboidx); ogl_check_error();
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(short)*idx.size(), &idx[0], GL_STATIC_DRAW); ogl_check_error();
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			shader = Shader("../shader/Patch");
+		}
+		//Define this somewhere in your header file
+		#define BUFFER_OFFSET(i) ((void*)(i))
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo); ogl_check_error();
+		glEnableClientState(GL_VERTEX_ARRAY); ogl_check_error();
+		glVertexPointer(3, GL_FLOAT, 12, BUFFER_OFFSET(0)); ogl_check_error();//The starting point of the VBO, for the vertices
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboidx); ogl_check_error();
+		shader.begin();
+	}
+	static void draw_patch(vec3f p1, vec3f p2, vec3f p3)
+	{
+		shader.setUniform4f("p1", p1.x, p1.y, p1.z, 1);
+		shader.setUniform4f("p2", p2.x, p2.y, p2.z, 1);
+		shader.setUniform4f("p3", p3.x, p3.y, p3.z, 1);
+		glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0)); ogl_check_error();//The starting point of the IBO
+		//0 and 3 are the first and last vertices
+		//glDrawRangeElements(GL_TRIANGLES, 0, 3, 3, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));   //The starting point of the IBO
+		//glDrawRangeElements may or may not give a performance advantage over glDrawElements	
+		tris_rendered += patch_resolution*patch_resolution;
+	}
+	static void end_patch()
+	{
+		shader.end();
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+		ogl_check_error();
+	}
+
+	static void draw_triangle(vec3f p1, vec3f p2, vec3f p3)
+	{
 		glBegin(GL_TRIANGLES);
 		glVertex3f(p1.x, p1.y, p1.z);
 		glVertex3f(p2.x, p2.y, p2.z);
 		glVertex3f(p3.x, p3.y, p3.z);
 		glEnd();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		tris_rendered++;
 	}
+
 	static void draw_recursive(vec3f p1,vec3f p2,vec3f p3, vec3f center , float size=1)
 	{
-		float ratio = gui.screen[0].slider["lod.ratio"].val; // default : 1
+		float ratio_size = size * gui.screen[0].slider["lod.ratio"].val; // default : 1
 		float minsize = gui.screen[0].slider["detail"].val;    // default : 0.01
+		vec3f edge_center[3] = { (p1 + p2) / 2, (p2 + p3) / 2, (p3 + p1) / 2 };
+		bool edge_test[3]; double angle[3];
 
-		double dot = double(((p1+p2+p3)/3).norm().dot(center));
-		double dist = acos(clamp(dot, -1, 1)) / M_PI;
-
-		if (dist > 0.5) return;//culling
-
-		if (dist > double(ratio)*double(size) || size < minsize) 
-		{ 
-			draw_tri(p1, p2, p3); 
-			return; 
+		loopi(0, 3)
+		{
+			double dot = edge_center[i].dot(center);
+			angle[i] = acos(clamp(dot, -1, 1));
+			edge_test[i] = angle[i] > ratio_size;
 		}
 
-		// Recurse
-		
-		vec3f p[6] = { p1, p2, p3, (p1 + p2) / 2, (p2 + p3) / 2, (p3 + p1) / 2 };
-		int idx[12] = { 0, 3, 5, 5, 3, 4, 3, 1, 4, 5, 4, 2 };
+		if (min(angle[0], min(angle[1], angle[2])) > M_PI / 2) return;//culling
 
-		loopi(0, 4)
+		if ((edge_test[0] && edge_test[1] && edge_test[2]) || size < minsize)
+		{ 
+			if (gui.screen[0].checkbox["patches"].checked)
+				draw_patch(p1, p2, p3); 
+			else
+				draw_triangle(p1, p2, p3);
+			return; 
+		}
+		// Recurse
+		vec3f p[6] = { p1, p2, p3, edge_center[0], edge_center[1], edge_center[2] };
+		int idx[12] = { 0, 3, 5,    5, 3, 4,    3, 1, 4,    5, 4, 2 };
+		bool valid[4] = { 1, 1, 1, 1 };
+
+		if (edge_test[0]){ p[3] = p1; valid[0] = 0; } // skip triangle 0 ?
+		if (edge_test[1]){ p[4] = p2; valid[2] = 0; } // skip triangle 2 ?
+		if (edge_test[2]){ p[5] = p3; valid[3] = 0; } // skip triangle 3 ?
+
+		loopi(0, 4) if (valid[i])
 		{
 			draw_recursive(
 				p[idx[3 * i + 0]].norm(), 
 				p[idx[3 * i + 1]].norm(),
 				p[idx[3 * i + 2]].norm(),
 				center,size/2 );
-		}
+		}		
 	}
 	static void draw(vec3f center)
 	{
@@ -78,6 +161,8 @@ struct World
 
 		tris_rendered = 0;
 
+		if (gui.screen[0].checkbox["patches"].checked) begin_patch();
+
 		loopi(0, idx.size() / 3)
 		{
 			draw_recursive(
@@ -86,10 +171,14 @@ struct World
 				p[idx[i * 3 + 2]].norm(), // triangle point 3
 				center);
 		}
+		//draw_patch(vec3f(0, 0, 0), vec3f(1, 0, 0), vec3f(0, 1, 0));
+		if (gui.screen[0].checkbox["patches"].checked) end_patch();	
+
 		gui.screen[0].label["stats"].text = Gui::String("Triangles: ") + tris_rendered;
 	}
 };
 int World::tris_rendered;
+GLuint  World::vbo = 0, World::vboidx, World::indices = 0; Shader  World::shader;
 ////////////////////////////////////////////////////////////////////////////////
 void init_gui()
 {
@@ -173,7 +262,12 @@ void init_gui()
 			//
 			//  Draw our World
 			//
+			if (!gui.screen[0].checkbox["solid"].checked)
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 			World::draw(center);
+
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 			////////////////////
 			//
@@ -184,6 +278,16 @@ void init_gui()
 			glDisable(GL_DEPTH_TEST);
 			glPopMatrix(); glMatrixMode(GL_PROJECTION); glPopMatrix();
 			fbo.disable();
+			{
+				static uint t = timeGetTime(),f=0;
+				int tt = timeGetTime(); f++;
+				if (tt - t >= 1000)
+				{
+					std::cout <<  "fps " << f << std::endl;
+					f = 0;t=tt;
+				}
+			}
+			
 		};
 
 		Gui::Window &w = gui.screen[0];
@@ -202,19 +306,28 @@ void init_gui()
 			{
 				if(w)if(b)if(b->var.ptr["fbo"]){delete(((FBO*)b->var.ptr["fbo"]));}
 			};
-		w.label["detail"] = Gui::Label("Detail : 0.001",20, 20, 100, 20);
-		w.slider["detail"] = Gui::Slider(0.001, 1, 0.001, 120, 20, 100, 20);
+		int y = 20;
+		w.label["detail"] = Gui::Label("Detail : 0.001",20, y, 100, 20);
+		w.slider["detail"] = Gui::Slider(0.001, 1, 0.001, 120, y, 100, 20);
 		w.slider["detail"].callback_pressed = [](Gui::Window *w, Gui::Button* b, int i) // call before drawing the first time
 		{
 			if (w)if (b) w->label["detail"].text = Gui::String("Detail : ") + ((Gui::Slider*)b)->val;
 		};
-		w.label["lod.ratio"] = Gui::Label("Ratio : 1", 20, 50, 100, 20);
-		w.slider["lod.ratio"] = Gui::Slider(0.01, 4, 1, 120, 50, 100, 20);
+		y += 30;
+		w.label["lod.ratio"] = Gui::Label("Ratio : 3", 20, y, 100, 20);
+		w.slider["lod.ratio"] = Gui::Slider(0.01, 8, 3, 120, y, 100, 20);
 		w.slider["lod.ratio"].callback_pressed = [](Gui::Window *w, Gui::Button* b, int i) // call before drawing the first time
 		{
 			if (w)if (b) w->label["lod.ratio"].text = Gui::String("Ratio : ") + ((Gui::Slider*)b)->val;
 		};
-		w.label["stats"] = Gui::Label("default", 20, 80, 200, 20);
+		y += 30;
+		w.label["Patches"] = Gui::Label("Patches", 20, y, 100, 20);
+		w.checkbox["patches"] = Gui::CheckBox("",0,120, y, 16, 16);
+		y += 30;
+		w.label["Solid"] = Gui::Label("Solid", 20, y, 100, 20);
+		w.checkbox["solid"] = Gui::CheckBox("", 0, 120, y, 16, 16);
+		y += 30;
+		w.label["stats"] = Gui::Label("default", 20, y, 200, 20);
 	}
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -284,9 +397,7 @@ void disp(void)
 {
 	glClearColor(1,1,1,0);
 	glClear(GL_COLOR_BUFFER_BIT);
-	
 	draw_gui();
-	
 	glutSwapBuffers();
 }
 

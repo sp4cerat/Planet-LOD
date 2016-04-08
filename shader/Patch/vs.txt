@@ -1,0 +1,10 @@
+
+uniform vec4 p1,p2,p3;
+
+void main(void)
+{
+	vec4 p = p1+(p2-p1)*gl_Vertex.x+(p3-p1)*gl_Vertex.y;
+	p.xyz=normalize(p.xyz);
+	p.w=1;
+	gl_Position = gl_ModelViewProjectionMatrix*p;
+}
