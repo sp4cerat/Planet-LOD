@@ -1,8 +1,8 @@
-#ifndef _VECTOR3_H
-#define _VECTOR3_H
+#ifndef _vector3dD_H
+#define _vector3dD_H
 //------------------------------------------------------------------------------
 /**
-    @class _vector3
+    @class _vector3d
     @ingroup Math
 
     Generic vector3 class. Uses 16 Byte of mem instead of 12 (!)
@@ -13,66 +13,66 @@
 #include <float.h>
 
 //------------------------------------------------------------------------------
-class _vector3
+class _vector3d
 {
 public:
     /// constructor 1
-    _vector3();
+    _vector3d();
     /// constructor 2
-    _vector3(const float _x, const float _y, const float _z);
+    _vector3d(const double _x, const double _y, const double _z);
     /// constructor 3
-    _vector3(const _vector3& vec);
+    _vector3d(const _vector3d& vec);
     /// set elements 1
-    void set(const float _x, const float _y, const float _z);
+    void set(const double _x, const double _y, const double _z);
     /// set elements 2 
-    void set(const _vector3& vec);
+    void set(const _vector3d& vec);
     /// return length
-    float len() const;
-	float length(){return len();}
+    double len() const;
+	double length(){return len();}
 	/// return cross
-	_vector3 cross( const _vector3& a , const _vector3& b ) ;
+	_vector3d cross( const _vector3d& a , const _vector3d& b ) ;
     /// return length squared
-    float lensquared() const;
+    double lensquared() const;
     /// normalize
-    _vector3 norm(float length=1.0);
-	_vector3 normalize(){return norm();};
+    _vector3d norm(double length=1.0);
+	_vector3d normalize(){return norm();};
     /// inplace add
-    void operator +=(const _vector3& v0);
+    void operator +=(const _vector3d& v0);
     /// inplace sub
-    void operator -=(const _vector3& v0);
+    void operator -=(const _vector3d& v0);
     /// inplace scalar multiplication
-    void operator *=(float s);
+    void operator *=(double s);
     /// true if any of the elements are greater
-    bool operator >(const _vector3 rhs) const;
+    bool operator >(const _vector3d rhs) const;
     /// true if any of the elements are smaller
-    bool operator <(const _vector3 rhs) const;
+    bool operator <(const _vector3d rhs) const;
     /// fuzzy compare, return true/false
-    bool isequal(const _vector3& v, float tol) const;
+    bool isequal(const _vector3d& v, double tol) const;
     /// fuzzy compare, returns -1, 0, +1
-    int compare(const _vector3& v, float tol) const;
+    int compare(const _vector3d& v, double tol) const;
     /// rotate around axis
-    void rotate(const _vector3& axis, float angle);
+    void rotate(const _vector3d& axis, double angle);
     /// inplace linear interpolation
-    void lerp(const _vector3& v0, float lerpVal);
+    void lerp(const _vector3d& v0, double lerpVal);
     /// returns a vector orthogonal to self, not normalized
-    _vector3 findortho() const;
+    _vector3d findortho() const;
     /// saturate components between 0 and 1
     void saturate();
     /// dot product
-    float dot(const _vector3& v0) const;
+    double dot(const _vector3d& v0) const;
     /// distance between 2 vector3's
-    static float distance(const _vector3& v0, const _vector3& v1);
+    static double distance(const _vector3d& v0, const _vector3d& v1);
 	/// min
-	void minimum(const _vector3& v)
+	void minimum(const _vector3d& v)
 	{
 		x=min(x,v.x);y=min(y,v.y);z=min(z,v.z);
 	}
 	/// max
-	void maximum(const _vector3& v)
+	void maximum(const _vector3d& v)
 	{
 		x=max(x,v.x);y=max(y,v.y);z=max(z,v.z);
 	}
-	float angle(const _vector3& v)
+	double angle(const _vector3d& v)
 	{
 		return acos(dot(v)/(v.len()*len()));
 	}
@@ -80,8 +80,8 @@ public:
 	/// encode_normal sphere
 	void to_angle_x_y()
 	{
-		float a_y=atan2(x,z);
-		float a_x=acos(dot(_vector3(0,1,0)));
+		double a_y=atan2(x,z);
+		double a_x=acos(dot(_vector3d(0,1,0)));
 		x=a_x-M_PI/2;
 		y=a_y-M_PI/2;
 		z=0;
@@ -89,7 +89,7 @@ public:
 	/// encode_normal sphere
 	void from_angle_x_y()
 	{
-		float ry=y+M_PI/2, rx=x+M_PI/2;
+		double ry=y+M_PI/2, rx=x+M_PI/2;
 		x=sin(ry)*sin(rx);
 		z=cos(ry)*sin(rx);
 		y=cos(rx);
@@ -98,16 +98,16 @@ public:
 	/// encode_normal sphere
 	unsigned int encode_normal_sphere()
 	{
-		float a_y=atan2(x,z)*127.0f/M_PI+128.0f;
-		float a_x=acos(dot(_vector3(0,1,0)))*255.0/M_PI;
-		//printf("ay %2.2f \n",float(atan2(x,z)));
+		double a_y=atan2(x,z)*127.0f/M_PI+128.0f;
+		double a_x=acos(dot(_vector3d(0,1,0)))*255.0/M_PI;
+		//printf("ay %2.2f \n",double(atan2(x,z)));
 		return int(a_y)+(int(a_x)<<8);
 	}
 	/// dencode_normal sphere
 	void decode_normal_sphere(int pack)
 	{
-		float ry=float(int(pack&255)-128)*M_PI/127.0f;pack>>=8;
-		float rx=float(int(pack&255))*M_PI/255.0f;
+		double ry=double(int(pack&255)-128)*M_PI/127.0f;pack>>=8;
+		double rx=double(int(pack&255))*M_PI/255.0f;
 		//printf("ry %2.2f \n",ry);
 
 		x=sin(ry)*sin(rx);
@@ -161,16 +161,16 @@ public:
 		z/=255.0;
 	}
 
-	float& operator[] (int i){ return (&this->x)[i];}
+	double& operator[] (int i){ return (&this->x)[i];}
 
-	float x, y, z;
+	double x, y, z;
 };
 
 //------------------------------------------------------------------------------
 /**
 */
 inline
-_vector3::_vector3() :
+_vector3d::_vector3d() :
     x(0.0f),
     y(0.0f),
     z(0.0f)
@@ -182,7 +182,7 @@ _vector3::_vector3() :
 /**
 */
 inline
-_vector3::_vector3(const float _x, const float _y, const float _z) :
+_vector3d::_vector3d(const double _x, const double _y, const double _z) :
     x(_x),
     y(_y),
     z(_z)
@@ -194,7 +194,7 @@ _vector3::_vector3(const float _x, const float _y, const float _z) :
 /**
 */
 inline
-_vector3::_vector3(const _vector3& vec) :
+_vector3d::_vector3d(const _vector3d& vec) :
     x(vec.x),
     y(vec.y),
     z(vec.z)
@@ -207,7 +207,7 @@ _vector3::_vector3(const _vector3& vec) :
 */
 inline
 void
-_vector3::set(const float _x, const float _y, const float _z)
+_vector3d::set(const double _x, const double _y, const double _z)
 {
     x = _x;
     y = _y;
@@ -219,7 +219,7 @@ _vector3::set(const float _x, const float _y, const float _z)
 */
 inline
 void
-_vector3::set(const _vector3& vec)
+_vector3d::set(const _vector3d& vec)
 {
     x = vec.x;
     y = vec.y;
@@ -230,8 +230,8 @@ _vector3::set(const _vector3& vec)
 /**
 */
 inline
-_vector3
-_vector3::cross( const _vector3& a , const _vector3& b ) 
+_vector3d
+_vector3d::cross( const _vector3d& a , const _vector3d& b ) 
     { 
 		x = a.y * b.z - a.z * b.y;
 		y = a.z * b.x - a.x * b.z;
@@ -243,18 +243,18 @@ _vector3::cross( const _vector3& a , const _vector3& b )
 /**
 */
 inline
-float
-_vector3::len() const
+double
+_vector3d::len() const
 {
-    return (float) n_sqrt(x * x + y * y + z * z);
+    return (double) n_sqrt(x * x + y * y + z * z);
 }
 
 //------------------------------------------------------------------------------
 /**
 */
 inline
-float 
-_vector3::lensquared() const
+double 
+_vector3d::lensquared() const
 {
     return x * x + y * y + z * z;
 }
@@ -263,11 +263,11 @@ _vector3::lensquared() const
 /**
 */
 inline
-_vector3
-_vector3::norm(float length)
+_vector3d
+_vector3d::norm(double length)
 {
-    float l = len()/length;
-    if (l > TINY) 
+    double l = len()/length;
+    //if (l > TINY) 
     {
         x /= l;
         y /= l;
@@ -281,7 +281,7 @@ _vector3::norm(float length)
 */
 inline
 void
-_vector3::operator +=(const _vector3& v0)
+_vector3d::operator +=(const _vector3d& v0)
 {
     x += v0.x;
     y += v0.y;
@@ -293,7 +293,7 @@ _vector3::operator +=(const _vector3& v0)
 */
 inline
 void
-_vector3::operator -=(const _vector3& v0)
+_vector3d::operator -=(const _vector3d& v0)
 {
     x -= v0.x;
     y -= v0.y;
@@ -305,7 +305,7 @@ _vector3::operator -=(const _vector3& v0)
 */
 inline
 void
-_vector3::operator *=(float s)
+_vector3d::operator *=(double s)
 {
     x *= s;
     y *= s;
@@ -317,7 +317,7 @@ _vector3::operator *=(float s)
 */
 inline
 bool
-_vector3::isequal(const _vector3& v, float tol) const
+_vector3d::isequal(const _vector3d& v, double tol) const
 {
     if (fabs(v.x - x) > tol)      return false;
     else if (fabs(v.y - y) > tol) return false;
@@ -330,7 +330,7 @@ _vector3::isequal(const _vector3& v, float tol) const
 */
 inline
 int
-_vector3::compare(const _vector3& v, float tol) const
+_vector3d::compare(const _vector3d& v, double tol) const
 {
     if (fabs(v.x - x) > tol)      return (v.x > x) ? +1 : -1; 
     else if (fabs(v.y - y) > tol) return (v.y > y) ? +1 : -1;
@@ -343,15 +343,15 @@ _vector3::compare(const _vector3& v, float tol) const
 */
 inline
 void
-_vector3::rotate(const _vector3& axis, float angle)
+_vector3d::rotate(const _vector3d& axis, double angle)
 {
     // rotates this one around given vector. We do
     // rotation with matrices, but these aren't defined yet!
-    float rotM[9];
-    float sa, ca;
+    double rotM[9];
+    double sa, ca;
 
-    sa = (float) sin(angle);
-    ca = (float) cos(angle);
+    sa = (double) sin(angle);
+    ca = (double) cos(angle);
 
     // build a rotation matrix
     rotM[0] = ca + (1 - ca) * axis.x * axis.x;
@@ -365,7 +365,7 @@ _vector3::rotate(const _vector3& axis, float angle)
     rotM[8] = ca + (1 - ca) * axis.z * axis.z;
 
     // "handmade" multiplication
-    _vector3 help(rotM[0] * this->x + rotM[1] * this->y + rotM[2] * this->z,
+    _vector3d help(rotM[0] * this->x + rotM[1] * this->y + rotM[2] * this->z,
                   rotM[3] * this->x + rotM[4] * this->y + rotM[5] * this->z,
                   rotM[6] * this->x + rotM[7] * this->y + rotM[8] * this->z);
     *this = help;
@@ -376,9 +376,9 @@ _vector3::rotate(const _vector3& axis, float angle)
 */
 static 
 inline 
-_vector3 operator +(const _vector3& v0, const _vector3& v1) 
+_vector3d operator +(const _vector3d& v0, const _vector3d& v1) 
 {
-    return _vector3(v0.x + v1.x, v0.y + v1.y, v0.z + v1.z);
+    return _vector3d(v0.x + v1.x, v0.y + v1.y, v0.z + v1.z);
 }
 
 //------------------------------------------------------------------------------
@@ -386,9 +386,9 @@ _vector3 operator +(const _vector3& v0, const _vector3& v1)
 */
 static 
 inline 
-_vector3 operator -(const _vector3& v0, const _vector3& v1) 
+_vector3d operator -(const _vector3d& v0, const _vector3d& v1) 
 {
-    return _vector3(v0.x - v1.x, v0.y - v1.y, v0.z - v1.z);
+    return _vector3d(v0.x - v1.x, v0.y - v1.y, v0.z - v1.z);
 }
 
 //------------------------------------------------------------------------------
@@ -396,9 +396,9 @@ _vector3 operator -(const _vector3& v0, const _vector3& v1)
 */
 static 
 inline 
-_vector3 operator *(const _vector3& v0, const float s) 
+_vector3d operator *(const _vector3d& v0, const double s) 
 {
-    return _vector3(v0.x * s, v0.y * s, v0.z * s);
+    return _vector3d(v0.x * s, v0.y * s, v0.z * s);
 }
 
 //------------------------------------------------------------------------------
@@ -406,9 +406,9 @@ _vector3 operator *(const _vector3& v0, const float s)
 */
 static 
 inline 
-_vector3 operator -(const _vector3& v) 
+_vector3d operator -(const _vector3d& v) 
 {
-    return _vector3(-v.x, -v.y, -v.z);
+    return _vector3d(-v.x, -v.y, -v.z);
 }
 
 //------------------------------------------------------------------------------
@@ -416,10 +416,10 @@ _vector3 operator -(const _vector3& v)
 */
 static 
 inline 
-_vector3 operator /(const _vector3& v0, const float s)
+_vector3d operator /(const _vector3d& v0, const double s)
 {
-    float one_over_s = 1.0f/s;
-    return _vector3(v0.x*one_over_s, v0.y*one_over_s, v0.z*one_over_s);
+    double one_over_s = 1.0f/s;
+    return _vector3d(v0.x*one_over_s, v0.y*one_over_s, v0.z*one_over_s);
 }
 
 //------------------------------------------------------------------------------
@@ -428,7 +428,7 @@ _vector3 operator /(const _vector3& v0, const float s)
 */
 static
 inline
-float operator %(const _vector3& v0, const _vector3& v1)
+double operator %(const _vector3d& v0, const _vector3d& v1)
 {
     return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z;
 }
@@ -439,12 +439,12 @@ float operator %(const _vector3& v0, const _vector3& v1)
 */
 static 
 inline 
-_vector3 operator *(const _vector3& v0, const _vector3& v1) 
+_vector3d operator *(const _vector3d& v0, const _vector3d& v1) 
 {
-//    return _vector3(v0.y * v1.z - v0.z * v1.y,
+//    return _vector3d(v0.y * v1.z - v0.z * v1.y,
  //                   v0.z * v1.x - v0.x * v1.z,
    //                 v0.x * v1.y - v0.y * v1.x);
-    return _vector3(v0.x*v1.x,v0.y*v1.y,v0.z*v1.z);
+    return _vector3d(v0.x*v1.x,v0.y*v1.y,v0.z*v1.z);
 }
 
 //------------------------------------------------------------------------------
@@ -452,7 +452,7 @@ _vector3 operator *(const _vector3& v0, const _vector3& v1)
 */
 inline
 void
-_vector3::lerp(const _vector3& v0, float lerpVal)
+_vector3d::lerp(const _vector3d& v0, double lerpVal)
 {
     x = v0.x + ((x - v0.x) * lerpVal);
     y = v0.y + ((y - v0.y) * lerpVal);
@@ -464,7 +464,7 @@ _vector3::lerp(const _vector3& v0, float lerpVal)
 */
 inline
 void
-_vector3::saturate()
+_vector3d::saturate()
 {
     x = n_saturate(x);
     y = n_saturate(y);
@@ -477,23 +477,23 @@ _vector3::saturate()
     Return value is not normalized.
 */
 inline
-_vector3
-_vector3::findortho() const
+_vector3d
+_vector3d::findortho() const
 {
     if (0.0 != x)
     {
-        return _vector3((-y - z) / x, 1.0, 1.0);
+        return _vector3d((-y - z) / x, 1.0, 1.0);
     } else
     if (0.0 != y)
     {
-        return _vector3(1.0, (-x - z) / y, 1.0);
+        return _vector3d(1.0, (-x - z) / y, 1.0);
     } else
     if (0.0 != z)
     {
-        return _vector3(1.0, 1.0, (-x - y) / z);
+        return _vector3d(1.0, 1.0, (-x - y) / z);
     } else
     {
-        return _vector3(0.0, 0.0, 0.0);
+        return _vector3d(0.0, 0.0, 0.0);
     }
 }
 
@@ -502,8 +502,8 @@ _vector3::findortho() const
     Dot product for vector3
 */
 inline
-float
-_vector3::dot(const _vector3& v0) const
+double
+_vector3d::dot(const _vector3d& v0) const
 {
     return ( x * v0.x + y * v0.y + z * v0.z );
 }
@@ -513,7 +513,7 @@ _vector3::dot(const _vector3& v0) const
 */
 inline
 bool
-_vector3::operator >(const _vector3 rhs) const
+_vector3d::operator >(const _vector3d rhs) const
 {
 	if(fabs(x-rhs.x)>0.0001){if(x>rhs.x)return true;else return false;}
 	if(fabs(y-rhs.y)>0.0001){if(y>rhs.y)return true;else return false;}
@@ -537,7 +537,7 @@ _vector3::operator >(const _vector3 rhs) const
 */
 inline
 bool
-_vector3::operator <(const _vector3 rhs) const
+_vector3d::operator <(const _vector3d rhs) const
 {
 	if(fabs(x-rhs.x)>0.0001){if(x<rhs.x)return true;else return false;}
 	if(fabs(y-rhs.y)>0.0001){if(y<rhs.y)return true;else return false;}
@@ -560,11 +560,11 @@ _vector3::operator <(const _vector3 rhs) const
 /**
 */
 inline
-float
-_vector3::distance(const _vector3& v0, const _vector3& v1)
+double
+_vector3d::distance(const _vector3d& v0, const _vector3d& v1)
 {
-    _vector3 v(v1 - v0);
-    return (float) n_sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    _vector3d v(v1 - v0);
+    return (double) n_sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
 //------------------------------------------------------------------------------

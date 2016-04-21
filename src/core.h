@@ -84,7 +84,8 @@
 #define ifexist( fname ) if( fexist(fname) )
 #define ifnotexist( fname ) if( !fexist(fname) )
 /*------------------------------------------------------*/
-
+template< class T >
+std::vector<T>& operator<<(std::vector<T>& v, const T& obj){ v.push_back(obj); return v; }
 /*------------------------------------------------------*/
 struct intfloat
 {

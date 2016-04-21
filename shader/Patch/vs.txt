@@ -1,10 +1,44 @@
 
+
 uniform vec4 p1,p2,p3;
+uniform int fractal_enabled;
+
+varying vec3 n;
+
+// noise from https://www.shadertoy.com/view/4tjGRh 
+// http://reindernijhoff.net/2015/05/rendering-a-planet-with-two-triangles/
+
+float hash( const in float n ) {
+    return fract(sin(n)*43758.5453123);
+}
+float noise( const in  vec3 x ) {
+    vec3 p = floor(x);
+    vec3 f = fract(x);
+    f = f*f*(3.0-2.0*f);
+    float n = p.x + p.y*157.0 + 113.0*p.z;
+    return mix(mix(mix( hash(n+  0.0), hash(n+  1.0),f.x),
+                   mix( hash(n+157.0), hash(n+158.0),f.x),f.y),
+               mix(mix( hash(n+113.0), hash(n+114.0),f.x),
+                   mix( hash(n+270.0), hash(n+271.0),f.x),f.y),f.z);
+}
+float terrainMapH(vec3 n)
+{
+  float h=0.0,f=16000.0;
+  while(f>4.0f)	
+  {
+	h=h*0.5+ noise(n*f);
+	f/=2.0;
+  }
+  return clamp(h*0.6,0.0,1.0);
+}
 
 void main(void)
 {
 	vec4 p = p1+(p2-p1)*gl_Vertex.x+(p3-p1)*gl_Vertex.y;
-	p.xyz=normalize(p.xyz);
-	p.w=1;
+
+	p.xyz=n=normalize(p.xyz); p.w=1;
+
+	if(fractal_enabled==1) p.xyz = p.xyz * ( 0.98 + terrainMapH(p.xyz) *0.02);
+
 	gl_Position = gl_ModelViewProjectionMatrix*p;
 }
