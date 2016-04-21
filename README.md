@@ -95,3 +95,8 @@ What the code is not:
 			}
 		}
 	};
+
+
+![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/Fractal.png?raw=true)
+
+![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/planet1.png?raw=true)
