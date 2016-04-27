@@ -31,6 +31,9 @@
     <Filter Include="cfg">
       <UniqueIdentifier>{3f242c67-04ba-4894-8743-451b1e740aca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shader\Patch">
+      <UniqueIdentifier>{02ac697c-3ca8-415c-9509-cf1fdb23f7e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ext\wglew.h">
@@ -137,6 +140,12 @@
     </Text>
     <Text Include="..\data\gui_skin.txt">
       <Filter>cfg</Filter>
+    </Text>
+    <Text Include="..\shader\Patch\frag.txt">
+      <Filter>shader\Patch</Filter>
+    </Text>
+    <Text Include="..\shader\Patch\vs.txt">
+      <Filter>shader\Patch</Filter>
     </Text>
   </ItemGroup>
 </Project>

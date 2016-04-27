@@ -206,9 +206,11 @@ class Gui
 	};
 	struct Var
 	{
-		std::map<String,matrix44>		mat4;
-		std::map<String,vec4f>			vec4;
-		std::map<String,double>			number;
+		std::map<String, matrix44>		mat4;
+		std::map<String, matrix44>		mat4d;
+		std::map<String, vec4f>			vec4;
+		std::map<String, vec4d>			vec4d;
+		std::map<String, double>		number;
 		std::map<String,String>			string;
 		std::map<String,Skin>			skin;
 		std::map<String,void*>			ptr;
@@ -347,7 +349,7 @@ class Gui
 		String(wchar_t *c){ set_text(c); }
 		String(const char *c){ this->s=std::string(c); }
 		//String(int i,char* format=0){ if(format)s=str(format,i);else s=str("%d",i); }
-		String(double f,char* format=0){ if(format)s=str(format,f);else {s= (f==floor(f)) ? str("%d",int(f)) : str("%.3lf",f);} }
+		String(double f,char* format=0){ if(format)s=str(format,f);else {s= (f==floor(f)) ? str("%d",int(f)) : str("%lg",f);} }
 
 		inline String& operator=(char* c){ s=c;return *this;}
 		inline char& operator [](int i){return s[i];}

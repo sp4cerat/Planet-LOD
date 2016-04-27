@@ -22,7 +22,7 @@
     <ProjectGuid>{98864040-E723-43CF-9479-6FBCDF2F6C51}</ProjectGuid>
     <RootNamespace>Cutscene</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>Planet-LOD</ProjectName>
+    <ProjectName>Planet-LOD.Simple</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -229,6 +229,8 @@
   <ItemGroup>
     <Text Include="..\data\gui_global.txt" />
     <Text Include="..\data\gui_skin.txt" />
+    <Text Include="..\shader\Patch\frag.txt" />
+    <Text Include="..\shader\Patch\vs.txt" />
     <Text Include="..\shader\SkinRepeated\frag.txt" />
     <Text Include="..\shader\SkinRepeated\vs.txt" />
     <Text Include="..\shader\SkinScaledInner\frag.txt" />

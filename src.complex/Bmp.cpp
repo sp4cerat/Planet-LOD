@@ -181,7 +181,7 @@ bool Bmp::load_float(const char*filename, float* fdata)
 	if (!fdata)fdata=(float*)&data[0];
 
 	FILE* fn;
-	if ((fn = fopen (filename,"rb")) == NULL) return false;// error_stop("Bmp::load_float");
+	if ((fn = fopen(filename, "rb")) == NULL) error_stop("Bmp::load_float: file not found :%s", filename);
 	fread(fdata,1,4*width*height,fn);
 	fclose(fn);
 	return true;

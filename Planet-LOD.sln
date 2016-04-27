@@ -2,7 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameGui.GLUT", "src\Project.vcxproj", "{98864040-E723-43CF-9479-6FBCDF2F6C51}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Planet-LOD.Simple", "src.simple\Project_Simple.vcxproj", "{98864040-E723-43CF-9479-6FBCDF2F6C51}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Planet-LOD.Complex", "src.complex\Project_Complex.vcxproj", "{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +22,14 @@ Global
 		{98864040-E723-43CF-9479-6FBCDF2F6C51}.Release|Win32.Build.0 = Release|Win32
 		{98864040-E723-43CF-9479-6FBCDF2F6C51}.Release|x64.ActiveCfg = Release|x64
 		{98864040-E723-43CF-9479-6FBCDF2F6C51}.Release|x64.Build.0 = Release|x64
+		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Debug|Win32.Build.0 = Debug|Win32
+		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Debug|x64.ActiveCfg = Debug|x64
+		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Debug|x64.Build.0 = Debug|x64
+		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Release|Win32.ActiveCfg = Release|Win32
+		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Release|Win32.Build.0 = Release|Win32
+		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Release|x64.ActiveCfg = Release|x64
+		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

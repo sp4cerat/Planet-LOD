@@ -60,7 +60,7 @@ int ogl_tex_new(unsigned int size_x, unsigned int size_y, int filter=GL_LINEAR,i
 
 	ogl_check_error();
 	glBindTexture(GL_TEXTURE_2D, 0);
-
+	ogl_check_error();
 	return id;
 }
 
