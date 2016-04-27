@@ -19,13 +19,13 @@ float noise( const in  vec3 x ) {
 }
 float terrainMapH(vec3 n)
 {
-  float h=0.0,f=16000.0;
-  while(f>4.0f)	
+  float h=0.0,f=640000.0;
+  while(f>40.0f)	
   {
 	h=h*0.5+ noise(n*f);
 	f/=2.0;
   }
-  return clamp(h*0.6,0.0,1.0);
+  return clamp(h*0.5,0.0,1.0);//-0.61;
 }
 vec3 terrainCalcNormalHigh( in vec3 pos, float t ) {
     vec2 e = vec2(1.0,-1.0)*0.001*t;
@@ -43,12 +43,12 @@ void main(void)
 	if(fractal_enabled==1) 
 	{
 		float h= terrainMapH(n);	
-		vec3 nrm=	terrainCalcNormalHigh(n,0.1);
+		vec3 nrm=	terrainCalcNormalHigh(n,0.001);
 		c=vec4(1.0,1.0,1.0,1.0);
 		if (h<0.75)   c=vec4(h,h,h*0.1,1.0);
 		if (h<0.5)    c=vec4(0.0,h,0.0,1.0);
-		if (h<0.555 ) c=vec4(h*3.0,h*2.0,h/2.0,1.0);
-		if (h<0.55)    c=vec4(0.0,0.0,h,1.0);
+		if (h<0.505 ) c=vec4(h*3.0,h*2.0,h/2.0,1.0);
+		if (h<0.50)    c=vec4(0.0,0.0,h,1.0);
 		c.xyz = c.xyz*(nrm.x*0.5+0.5);
 	}
 

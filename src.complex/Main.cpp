@@ -79,7 +79,7 @@ struct World
 	static void draw_patch(
 		vec3d p1, vec3d p2, vec3d p3,
 		vec2d uv1, vec2d uv2, vec2d uv3,
-		vec3d center)
+		vec3d center,double size)
 	{
 		vec3d d2 = p2 - p1, d3 = p3 - p1;	
 
@@ -87,31 +87,40 @@ struct World
 		shader.setUniform4f("nd2", d2.x, d2.y, d2.z, 1);
 		shader.setUniform4f("nd3", d3.x, d3.y, d3.z, 1);
 
-		vec4d p1x = modelviewprojection * vec4d(p1.x,p1.y,p1.z,1.0);
-		vec4d p2x = modelviewprojection * vec4d(p2.x, p2.y, p2.z, 1.0);// -p1x;
-		vec4d p3x = modelviewprojection * vec4d(p3.x, p3.y, p3.z, 1.0);// -p1x;
+		bool normalize_enabled = size > 0.0001 ? 1 : 0;
 
-		vec4d n1x = modelviewprojection * (vec4d(p1.x*0.994, p1.y*0.994, p1.z*0.994, 1.0));
-		vec4d n2x = modelviewprojection * (vec4d(p2.x*0.994, p2.y*0.994, p2.z*0.994, 1.0));
-		vec4d n3x = modelviewprojection * (vec4d(p3.x*0.994, p3.y*0.994, p3.z*0.994, 1.0));
+		if (!normalize_enabled)
+		{
+			vec4d p1x = modelviewprojection * vec4d(p1.x, p1.y, p1.z, 1.0);
+			vec4d p2x = modelviewprojection * vec4d(p2.x, p2.y, p2.z, 1.0);// -p1x;
+			vec4d p3x = modelviewprojection * vec4d(p3.x, p3.y, p3.z, 1.0);// -p1x;
 
-		n1x = n1x - p1x;
-		n2x = n2x - p2x;
-		n3x = n3x - p3x;
+			vec4d n1x = modelviewprojection * (vec4d(p1.x*0.994, p1.y*0.994, p1.z*0.994, 1.0));
+			vec4d n2x = modelviewprojection * (vec4d(p2.x*0.994, p2.y*0.994, p2.z*0.994, 1.0));
+			vec4d n3x = modelviewprojection * (vec4d(p3.x*0.994, p3.y*0.994, p3.z*0.994, 1.0));
 
-		vec4d d2x = p2x - p1x;
-		vec4d d3x = p3x - p1x;
+			n1x = n1x - p1x;
+			n2x = n2x - p2x;
+			n3x = n3x - p3x;
 
-		vec4d nd2x = n2x - n1x;
-		vec4d nd3x = n3x - n1x;		
+			vec4d d2x = p2x - p1x;
+			vec4d d3x = p3x - p1x;
 
-		shader.setUniform4f("n1x", n1x.x, n1x.y, n1x.z, n1x.w);
-		shader.setUniform4f("nd2x", nd2x.x, nd2x.y, nd2x.z, nd2x.w);
-		shader.setUniform4f("nd3x", nd3x.x, nd3x.y, nd3x.z, nd3x.w);
+			vec4d nd2x = n2x - n1x;
+			vec4d nd3x = n3x - n1x;
 
-		shader.setUniform4f("p1", p1x.x, p1x.y, p1x.z, p1x.w);
-		shader.setUniform4f("d2", d2x.x, d2x.y, d2x.z, d2x.w);
-		shader.setUniform4f("d3", d3x.x, d3x.y, d3x.z, d3x.w);
+			shader.setUniform4f("n1x", n1x.x, n1x.y, n1x.z, n1x.w);
+			shader.setUniform4f("nd2x", nd2x.x, nd2x.y, nd2x.z, nd2x.w);
+			shader.setUniform4f("nd3x", nd3x.x, nd3x.y, nd3x.z, nd3x.w);
+
+			shader.setUniform4f("p1", p1x.x, p1x.y, p1x.z, p1x.w);
+			shader.setUniform4f("d2", d2x.x, d2x.y, d2x.z, d2x.w);
+			shader.setUniform4f("d3", d3x.x, d3x.y, d3x.z, d3x.w);
+		}
+
+		shader.setUniform1i("normalize_enabled", normalize_enabled);
+		
+
 		glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0)); ogl_check_error();//The starting point of the IBO
 		//0 and 3 are the first and last vertices
 		//glDrawRangeElements(GL_TRIANGLES, 0, 3, 3, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));   //The starting point of the IBO
@@ -186,7 +195,7 @@ struct World
 		if ((edge_test[0] && edge_test[1] && edge_test[2]) || size < minsize)
 		{ 
 			if (gui.screen[0].checkbox["patches"].checked)
-				draw_patch(p1, p2, p3,uv1,uv2,uv3,center); 
+				draw_patch(p1, p2, p3,uv1,uv2,uv3,center,size); 
 			else
 				draw_triangle(p1, p2, p3, uv1, uv2, uv3, center);
 			return; 

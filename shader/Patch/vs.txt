@@ -1,7 +1,10 @@
 
 
-uniform vec4 p1,p2,p3;
+uniform vec4 p1,d2,d3;
+uniform vec4 n1,nd2,nd3;
+uniform vec4 n1x,nd2x,nd3x;
 uniform int fractal_enabled;
+uniform int normalize_enabled;
 
 varying vec3 n;
 
@@ -23,22 +26,34 @@ float noise( const in  vec3 x ) {
 }
 float terrainMapH(vec3 n)
 {
-  float h=0.0,f=16000.0;
-  while(f>4.0f)	
+  float h=0.0,f=640000.0;
+  while(f>40.0f)	
   {
 	h=h*0.5+ noise(n*f);
-	f/=2.0;
+	f/=2.0f;
   }
-  return clamp(h*0.6,0.0,1.0);
+  return 1.0-clamp(h*0.5,0.0,1.0);//-0.61;
 }
 
 void main(void)
 {
-	vec4 p = p1+(p2-p1)*gl_Vertex.x+(p3-p1)*gl_Vertex.y;
+	vec4 p = p1+(d2*gl_Vertex.x+d3*gl_Vertex.y);
+	n = n1.xyz+(nd2.xyz*gl_Vertex.x+nd3.xyz*gl_Vertex.y);
+	n = normalize(n);
 
-	p.xyz=n=normalize(p.xyz); p.w=1;
+	float h= fractal_enabled==0 ? 0.0 : terrainMapH(n.xyz);
 
-	if(fractal_enabled==1) p.xyz = p.xyz * ( 0.98 + terrainMapH(p.xyz) *0.02);
+	if(normalize_enabled==1)
+	{
+		p.xyz = n.xyz * (1.0-0.006*h);
+		p.w=1.0;
+		p = gl_ModelViewProjectionMatrix*p;
+	}
+	else
+	{
+		vec4 nx = n1x+(nd2x*gl_Vertex.x+nd3x*gl_Vertex.y);	
+		p += nx * h;
+	}
 
-	gl_Position = gl_ModelViewProjectionMatrix*p;
+	gl_Position = p;
 }
