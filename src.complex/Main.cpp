@@ -329,7 +329,7 @@ void render_callback(Gui::Window *window, Gui::Button* control, int index)
 
 	static double km = 0;
 	double kmh = speed * planetradius / (dt / (1000 * 3600));
-	km = (vec3d(pos.x, pos.y, pos.z).length() - 0.997) * planetradius * 1000;
+	km = (vec3d(pos.x, pos.y, pos.z).length() - 0.994) * planetradius * 1000;
 	w.label["Speed"].text = str("Speed : %lg km/h ( alt %lgm )", kmh, km);
 
 	if (gui.keyb.key['w']){ pos = pos + vec4d(dir_z.x, dir_z.y, dir_z.z, 0)*speed; }
@@ -353,7 +353,7 @@ void render_callback(Gui::Window *window, Gui::Button* control, int index)
 	glClearColor(1, 1, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
-	gluPerspective(z, (GLfloat)b.sx / (GLfloat)b.sy, 0.0000002, 64 );
+	gluPerspective(z, (GLfloat)b.sx / (GLfloat)b.sy, 0.00000002*clamp(1000*(vec3d(pos.x, pos.y, pos.z).length()-1.0), 1, 10000), 16);
 	glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
 
 	glMultMatrixf(&matrix44(q).m[0][0]);	// apply quaternion rotation
@@ -470,7 +470,7 @@ void init_gui()
 	y += 30;
 	w.label["fps"] = Gui::Label("10", 20, y, 200, 20);
 	y += 30;
-	w.label["help"] = Gui::Label("Help:\nw,s,a,d,q,e : move around\nspace : speed up\nmouse : rotate", 20, y, 200, 200);
+	w.label["help"] = Gui::Label("Help:\nw,s,a,d,q,e : move around\nspace : speed up\nmouse : rotate\nmouse wheel: speed", 20, y, 200, 200);
 }
 ////////////////////////////////////////////////////////////////////////////////
 void draw_gui()
