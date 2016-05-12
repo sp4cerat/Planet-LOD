@@ -1,0 +1,92 @@
+uniform sampler2D tx0,tx1,tx2,tx3,tx4,tx5; 
+
+#define f_frac(_a_) (_a_-floor(_a_))
+vec4 tex2dcubic( sampler2D texin, vec2 vecin) 
+{
+return texture2D(texin,vecin);
+	vec2 tsize = vec2(2048.0,2048.0);
+	vec2 one_tsize = vec2(1.0/tsize.x,1.0/tsize.y);
+	vec2 coord_grid = vecin*tsize - vec2(0.5,0.5);
+	vec2 fraction = f_frac(coord_grid);
+	vec2 one_frac = 1.0 - fraction;
+	vec2 one_frac2 = one_frac * one_frac;
+	vec2 fraction2 = fraction * fraction;
+	vec2 w0 = 1.0/6.0 * one_frac2 * one_frac;
+	vec2 w1 = 2.0/3.0 - 0.5 * fraction2 * (2.0-fraction);
+	vec2 w2 = 2.0/3.0 - 0.5 * one_frac2 * (2.0-one_frac);
+	vec2 w3 = 1.0/6.0 * fraction2 * fraction;
+	vec2 g0 = w0 + w1;
+	vec2 g1 = w2 + w3;
+	vec2 index = coord_grid-fraction;
+	vec2 h0 = ((w1 / g0) - 0.5 + index)*one_tsize;
+	vec2 h1 = ((w3 / g1) + 1.5 + index)*one_tsize;
+	// fetch the four linear interpolations
+	vec4 tex000 = texture2D(texin, vec2(h0.x, h0.y))*16.0;
+	vec4 tex001 = texture2D(texin, vec2(h0.x, h1.y))*16.0;
+	tex000 = mix(tex001, tex000, g0.y);
+	vec4 tex010 = texture2D(texin, vec2(h1.x, h0.y))*16.0;
+	vec4 tex011 = texture2D(texin, vec2(h1.x, h1.y))*16.0;
+	tex010 = mix(tex011, tex010, g0.y);	
+	return mix(tex010, tex000, g0.x)*(1.0/16.0);
+}
+
+float noise(vec3 n)
+{
+	vec3 h3 = 0.49+0.025*vec3(
+		tex2dcubic(tx0,vec2(n.x,n.y)*256.0).x,
+		tex2dcubic(tx1,vec2(n.x,n.z)*256.0).x,
+		tex2dcubic(tx2,vec2(n.y,n.z)*256.0).x
+	);
+	vec3 w3 = vec3(abs(n.z),abs(n.y),abs(n.x));
+	w3 = w3 / (w3.x+w3.y+w3.z);
+
+	float h = dot(h3,w3);
+	return 1.0-h;
+}
+
+
+
+
+uniform vec4 p1,d2,d3;
+uniform vec4 n1,nd2,nd3;
+uniform vec4 n1x,nd2x,nd3x;
+uniform int fractal_enabled;
+uniform int normalize_enabled;
+
+varying vec3 n;
+
+float terrainMapH(vec3 n)
+{
+	return noise(n);
+}
+
+void main(void)
+{
+	vec4 p = p1+(d2*gl_Vertex.x+d3*gl_Vertex.y);
+	n = n1.xyz+(nd2.xyz*gl_Vertex.x+nd3.xyz*gl_Vertex.y);
+	n = normalize(n);
+
+	float h= fractal_enabled==0 ? 0.0 : terrainMapH(n.xyz);
+
+	if(normalize_enabled==1)
+	{
+		p.xyz = n.xyz * (1.0-0.006*h);
+		p.w=1.0;
+		p = gl_ModelViewProjectionMatrix*p;
+	}
+	else
+	{
+		//float d1 = length(n.xyz-n1.xyz);
+		//float d2 = length(n.xyz-(nd2.xyz));
+		//float d3 = length(n.xyz-(nd3.xyz));
+
+		vec4 nx = n1x+(nd2x*gl_Vertex.x+nd3x*gl_Vertex.y);	
+		//if(d2<d1 && d2<d3) nx=nd2x;
+		//if(d3<d1 && d3<d1) nx=nd3x;
+
+		//vec4 nx = n1x;//mix(mix(n1x,nd2x,gl_Vertex.x),nd3x,gl_Vertex.y);//n1x+(nd2x*gl_Vertex.x+nd3x*gl_Vertex.y);	
+		p += nx * h;
+	}
+
+	gl_Position = p;
+}

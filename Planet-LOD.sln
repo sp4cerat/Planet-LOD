@@ -6,6 +6,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Planet-LOD.Simple", "src.si
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Planet-LOD.Complex", "src.complex\Project_Complex.vcxproj", "{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Planet-LOD.Textured", "src.textured\Project_Textured.vcxproj", "{EFD75F74-DD27-4F4E-B98B-E69673302D4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -30,6 +32,14 @@ Global
 		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Release|Win32.Build.0 = Release|Win32
 		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Release|x64.ActiveCfg = Release|x64
 		{4ADDC9C2-24E9-49F5-891B-3EA5AF2786D4}.Release|x64.Build.0 = Release|x64
+		{EFD75F74-DD27-4F4E-B98B-E69673302D4B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EFD75F74-DD27-4F4E-B98B-E69673302D4B}.Debug|Win32.Build.0 = Debug|Win32
+		{EFD75F74-DD27-4F4E-B98B-E69673302D4B}.Debug|x64.ActiveCfg = Debug|x64
+		{EFD75F74-DD27-4F4E-B98B-E69673302D4B}.Debug|x64.Build.0 = Debug|x64
+		{EFD75F74-DD27-4F4E-B98B-E69673302D4B}.Release|Win32.ActiveCfg = Release|Win32
+		{EFD75F74-DD27-4F4E-B98B-E69673302D4B}.Release|Win32.Build.0 = Release|Win32
+		{EFD75F74-DD27-4F4E-B98B-E69673302D4B}.Release|x64.ActiveCfg = Release|x64
+		{EFD75F74-DD27-4F4E-B98B-E69673302D4B}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
