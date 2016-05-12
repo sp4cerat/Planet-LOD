@@ -22,6 +22,11 @@ What the code is not:
 * A way to render a planet with best performance
 * A demonstration of modern high performance gl rendering
 
+**Discussion Forum**
+
+http://www.gamedev.net/topic/677700-planet-rendering-spherical-level-of-detail-in-less-than-100-lines-of-c/
+https://www.reddit.com/r/gamedev/comments/4d2oez/planet_rendering_spherical_levelofdetail_in_less/
+
 **Screenshot** 
 
 ![Screenshot1](https://github.com/sp4cerat/Planet-LOD/blob/master/screenshot/Animation_new.gif?raw=true)
